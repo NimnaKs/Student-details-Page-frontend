@@ -26,7 +26,8 @@ h2 {
 }
 
 .btn-primary,
-.btn-danger {
+.btn-danger
+.btn-warning {
     border-radius: 4px;
 }
 
@@ -53,4 +54,59 @@ h2 {
     background-color: #28a745;
     border-color: #28a745;
 }
+
+/* Additional styles for the form */
+#studentForm {
+    margin: 20px;
+}
+
+#studentForm .form-group {
+    margin-bottom: 15px;
+}
+
+#studentForm label {
+    font-weight: bold;
+}
+
+#studentForm button {
+    margin-top: 10px;
+}
+
+/* Additional styles for the button */
+.btn-success {
+    border-radius: 4px;
+}
+
+.btn-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-warning:hover {
+    background-color: #ff9800; /* Change to the desired hover background color */
+    border-color: #ff9800; /* Change to the desired hover border color */
+    color: #fff; /* Change to the desired hover text color */
+}
+
+
+/* Style for Student Details heading */
+#studentDetails h2.mb-4 {
+    background-color: #007bff; /* Primary blue background color */
+    color: #fff; /* White font color */
+    font-weight: bold; /* Bold font */
+    padding: 10px; /* Optional padding for better appearance */
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Style for Add New Student heading */
+#studentModal h4#studentFormHeading {
+    background-color: #007bff; /* Primary blue background color */
+    color: #fff; /* White font color */
+    font-weight: bold; /* Bold font */
+    padding: 10px; /* Optional padding for better appearance */
+    border-radius: 4px;
+    text-align: center;
+}
+
 
