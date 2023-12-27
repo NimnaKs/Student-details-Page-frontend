@@ -84,6 +84,11 @@ saveUpdateBtn.on('click', (event) => {
 
         if (saveUpdateBtn.text() === 'Save') {
             student_db.push(studentModel);
+            Swal.fire(
+                'Save Successfully !',
+                'Successful',
+                'success'
+            )
         } else {
             student_db.map((student) => {
                 if (studentModel.studentId === student.studentId) {
@@ -96,6 +101,12 @@ saveUpdateBtn.on('click', (event) => {
                     student.batchNo = studentModel.batchNo;
                 }
             });
+
+            Swal.fire(
+                'Update Successfully !',
+                'Successful',
+                'success'
+            )
         }
 
         clear.click();
