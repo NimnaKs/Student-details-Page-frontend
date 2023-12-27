@@ -57,7 +57,7 @@ saveUpdateBtn.on('click', (event) => {
     let prog = program.val();
     let b_no = batchNo.val();
 
-    let student = new StudentModel(
+    let studentModel = new StudentModel(
         student_id,
         f_name,
         l_name,
@@ -68,7 +68,21 @@ saveUpdateBtn.on('click', (event) => {
         b_no
     );
 
-    student_db.push(student);
+    if(saveUpdateBtn.text()==='Save'){
+        student_db.push(studentModel);
+    }else{
+        student_db.map((student) => {
+            if(studentModel.studentId === student.studentId){
+                student.fName = studentModel.fName;
+                student.lName = studentModel.lName;
+                student.contact = studentModel.contact;
+                student.email = studentModel.email;
+                student.address = studentModel.address;
+                student.program = studentModel.program;
+                student.batchNo = studentModel.batchNo;
+            }
+        });
+    }
 
     clear.click();
 
@@ -147,8 +161,8 @@ function openStudentModal(heading, buttonText, buttonClass,stuId) {
     }
 
     $('#studentFormHeading').text(heading);
-    $('#saveUpdateButton').text(buttonText);
+    saveUpdateBtn.text(buttonText);
     $('#studentModal').modal('show');
-    $('#saveUpdateButton').removeClass('btn-success btn-warning').addClass(buttonClass);
+    saveUpdateBtn.removeClass('btn-success btn-warning').addClass(buttonClass);
 
 }
