@@ -15,7 +15,17 @@ let address = $('#address');
 let program = $('#program');
 let batchNo = $('#batchNo');
 
+let search = $('#searchInput');
+
+search.on("keyup", function () {
+    let value = $(this).val().toLowerCase();
+    $("tbody tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+});
+
 addBtn.on('click', () => {
+    openStudentModal('Add New Student', 'Save', 'btn-success');
     studentId.val(generateStudentId());
 });
 
@@ -100,8 +110,9 @@ function populateStudentTable() {
         );
     });
 
-    $('.updateBtn').on('click', () => {
-        openStudentModal('Update Student', 'Update', 'btn-warning');
+    $('.updateBtn').on('click', function() {
+        const studentId = $(this).data('student-id');
+        openStudentModal('Update Student', 'Update', 'btn-warning',studentId);
     });
 
     $('.deleteBtn').on('click', function() {
@@ -118,5 +129,26 @@ function deleteStudent(studentId) {
         student_db.splice(index, 1);
         populateStudentTable(); 
     }
+
+}
+
+function openStudentModal(heading, buttonText, buttonClass,stuId) {
+
+    if(stuId){
+        const student = student_db.find(student => student.studentId === stuId);
+        studentId.val(student.studentId);
+        firstName.val(student.fName);
+        lastName.val(student.lName);
+        contact.val(student.contact);
+        email.val(student.email);
+        address.val(student.address);
+        program.val(student.program);
+        batchNo.val(student.batchNo);
+    }
+
+    $('#studentFormHeading').text(heading);
+    $('#saveUpdateButton').text(buttonText);
+    $('#studentModal').modal('show');
+    $('#saveUpdateButton').removeClass('btn-success btn-warning').addClass(buttonClass);
 
 }
