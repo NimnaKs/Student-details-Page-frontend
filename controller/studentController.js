@@ -1,5 +1,5 @@
-import {student_db} from "../db/db.js";
-import {StudentModel} from "../model/studentModel.js";
+import { student_db } from "../db/db.js";
+import { StudentModel } from "../model/studentModel.js";
 
 let addBtn = $('#addBtn');
 let saveUpdateBtn = $('#saveUpdateButton');
@@ -19,11 +19,11 @@ addBtn.on('click', () => {
     studentId.val(generateStudentId());
 });
 
-function generateStudentId(){
+function generateStudentId() {
     let highestStuId = 0;
 
     for (let i = 0; i < student_db.length; i++) {
-        
+
         const numericPart = parseInt(student_db[i].studentId.split('-')[1]);
 
         if (!isNaN(numericPart) && numericPart > highestStuId) {
@@ -34,7 +34,7 @@ function generateStudentId(){
     return `stu-${String(highestStuId + 1).padStart(3, '0')}`;
 }
 
-saveUpdateBtn.on('click',(event) => {
+saveUpdateBtn.on('click', (event) => {
 
     event.preventDefault();
 
@@ -66,7 +66,7 @@ saveUpdateBtn.on('click',(event) => {
 
 });
 
-clear.on('click',() => {
+clear.on('click', () => {
     reset.click();
     studentId.val(generateStudentId());
 });
@@ -86,12 +86,13 @@ function populateStudentTable() {
                 <td>${student.program}</td>
                 <td>${student.batchNo}</td>
                 <td>
-                    <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#studentModal">
+                    <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#studentModal"
+                        data-student-id="${student.studentId}">
                         Edit
                     </button>
                 </td>
                 <td>
-                    <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal">
+                    <button class="deleteBtn btn btn-danger btn-sm" data-student-id="${student.studentId}">
                         Delete
                     </button>
                 </td>
@@ -103,7 +104,19 @@ function populateStudentTable() {
         openStudentModal('Update Student', 'Update', 'btn-warning');
     });
 
-    $('.deleteBtn').on('click', () => {
-        deleteStudent();
+    $('.deleteBtn').on('click', function() {
+        const studentId = $(this).data('student-id');
+        deleteStudent(studentId);
     });
+}
+
+function deleteStudent(studentId) {
+
+    const index = student_db.findIndex(student => student.studentId === studentId);
+    
+    if (index !== -1) {
+        student_db.splice(index, 1);
+        populateStudentTable(); 
+    }
+
 }
