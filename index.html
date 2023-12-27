@@ -78,7 +78,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="contact">Contact</label>
-                                <input type="text" class="form-control" id="contact" placeholder="Enter Contact"
+                                <input type="tel" class="form-control" id="contact" placeholder="Enter Contact"
                                     required>
                             </div>
                             <div class="form-group">
@@ -93,14 +93,15 @@
                             <div class="form-group">
                                 <label for="program">Program</label>
                                 <select class="form-control" id="program" required>
-                                    <option value="gdse">GDSE</option>
-                                    <option value="cmjd">CMJD</option>
-                                    <option value="rwad">RWAD</option>
+                                    <option value="" disabled selected>Select program</option>
+                                    <option value="GDSE">GDSE</option>
+                                    <option value="CMJD">CMJD</option>
+                                    <option value="RWAD">RWAD</option>
                                 </select>
-                            </div>
+                            </div>                            
                             <div class="form-group">
                                 <label for="batchNo">Batch No</label>
-                                <input type="text" class="form-control" id="batchNo" placeholder="Enter Batch No"
+                                <input type="number" class="form-control" id="batchNo" placeholder="Enter Batch No"
                                     required>
                             </div>
                             <button type="submit" class="btn btn-success" id="saveUpdateButton">Save</button>
@@ -129,6 +130,9 @@
 
     <!-- Student Controller Module -->
     <script type="module" src="controller/studentController.js"></script>
+
+    <!-- alert CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     
 </body>
 
