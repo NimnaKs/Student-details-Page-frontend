@@ -23,16 +23,14 @@ function generateStudentId(){
     let highestStuId = 0;
 
     for (let i = 0; i < student_db.length; i++) {
-        // Extract the numeric part of the student Id
+        
         const numericPart = parseInt(student_db[i].studentId.split('-')[1]);
 
-        // Check if the numeric part is greater than the current highest
         if (!isNaN(numericPart) && numericPart > highestStuId) {
             highestStuId = numericPart;
         }
     }
 
-    // Increment the highest numeric part and format as "stu-XXX"
     return `stu-${String(highestStuId + 1).padStart(3, '0')}`;
 }
 
@@ -62,9 +60,9 @@ saveUpdateBtn.on('click',(event) => {
 
     student_db.push(student);
 
-    console.log(student_db);
-
     clear.click();
+
+    populateStudentTable();
 
 });
 
@@ -72,3 +70,40 @@ clear.on('click',() => {
     reset.click();
     studentId.val(generateStudentId());
 });
+
+
+function populateStudentTable() {
+    $('tbody').eq(0).empty();
+    student_db.map((student) => {
+        $('tbody').eq(0).append(
+            `<tr>
+                <th row='span'>${student.studentId}</th>
+                <td>${student.fName}</td>
+                <td>${student.lName}</td>
+                <td>${student.contact}</td>
+                <td>${student.email}</td>
+                <td>${student.address}</td>
+                <td>${student.program}</td>
+                <td>${student.batchNo}</td>
+                <td>
+                    <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#studentModal">
+                        Edit
+                    </button>
+                </td>
+                <td>
+                    <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal">
+                        Delete
+                    </button>
+                </td>
+            </tr>`
+        );
+    });
+
+    $('.updateBtn').on('click', () => {
+        openStudentModal('Update Student', 'Update', 'btn-warning');
+    });
+
+    $('.deleteBtn').on('click', () => {
+        deleteStudent();
+    });
+}
