@@ -1,29 +1,27 @@
 $(document).ready(function () {
 
+    // Search functionality
     $("#searchInput").on("keyup", function () {
         var value = $(this).val().toLowerCase();
         $("tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
 
-    $('#addBtn').on('click', openAddStudentModal);
-    $('#updateBtn').on('click', openUpdateStudentModal);
+    // Event handlers
+    $('#addBtn').on('click', function () {
+        openStudentModal('Add New Student', 'Save', 'btn-success');
+    });
+
+    $('#updateBtn').on('click', function () {
+        openStudentModal('Update Student', 'Update', 'btn-warning');
+    });
 
 });
 
-function openAddStudentModal() {
-    $('#studentFormHeading').text('Add New Student');
-    $('#saveUpdateButton').text('Save');
+function openStudentModal(heading, buttonText, buttonClass) {
+    $('#studentFormHeading').text(heading);
+    $('#saveUpdateButton').text(buttonText);
     $('#studentModal').modal('show');
-    $('#saveUpdateButton').removeClass('btn-warning');
-    $('#saveUpdateButton').addClass('btn-success');
-}
-
-function openUpdateStudentModal() {
-    $('#studentFormHeading').text('Update Student');
-    $('#saveUpdateButton').text('Update');
-    $('#saveUpdateButton').removeClass('btn-success');
-    $('#saveUpdateButton').addClass('btn-warning');
-    $('#studentModal').modal('show');
+    $('#saveUpdateButton').removeClass('btn-success btn-warning').addClass(buttonClass);
 }
