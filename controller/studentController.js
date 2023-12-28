@@ -1,6 +1,10 @@
 import { StudentModel } from "../model/studentModel.js";
 import { DBProgress } from "../db/db.js";
 
+document.addEventListener('DOMContentLoaded', function () {
+    populateStudentTable();
+});
+
 let addBtn = $('#addBtn');
 let saveUpdateBtn = $('#saveUpdateButton');
 let clear = $('#clear');
@@ -128,32 +132,40 @@ clear.on('click', () => {
 
 
 function populateStudentTable() {
-    $('tbody').eq(0).empty();
-    student_db.map((student) => {
-        $('tbody').eq(0).append(
-            `<tr>
-                <th row='span'>${student.studentId}</th>
-                <td>${student.fName}</td>
-                <td>${student.lName}</td>
-                <td>${student.contact}</td>
-                <td>${student.email}</td>
-                <td>${student.address}</td>
-                <td>${student.program}</td>
-                <td>${student.batchNo}</td>
-                <td>
-                    <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#studentModal"
-                        data-student-id="${student.studentId}">
-                        Edit
-                    </button>
-                </td>
-                <td>
-                    <button class="deleteBtn btn btn-danger btn-sm" data-student-id="${student.studentId}">
-                        Delete
-                    </button>
-                </td>
-            </tr>`
-        );
-    });
+    dbprogress.getStudent()
+        .then((responseText) => {
+                let student_db = JSON.parse(responseText);
+                $('tbody').eq(0).empty();
+                student_db.map((student) => {
+                    $('tbody').eq(0).append(
+                    `<tr>
+                        <th row='span'>${student.studentId}</th>
+                        <td>${student.firstName}</td>
+                        <td>${student.lastName}</td>
+                        <td>${student.contact}</td>
+                        <td>${student.email}</td>
+                        <td>${student.address}</td>
+                        <td>${student.program}</td>
+                        <td>${student.batchNo}</td>
+                        <td>
+                            <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#studentModal"
+                                data-student-id="${student.studentId}">
+                                Edit
+                            </button>
+                        </td>
+                        <td>
+                            <button class="deleteBtn btn btn-danger btn-sm" data-student-id="${student.studentId}">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>`
+                    );
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+            showError('fetch Unsucessfull', error);
+        });
 
     $('.updateBtn').on('click', function () {
         const studentId = $(this).data('student-id');
@@ -240,3 +252,4 @@ function validation(value, message, test) {
     }
     return true;
 }
+
