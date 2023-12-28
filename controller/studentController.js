@@ -91,6 +91,7 @@ saveUpdateBtn.on('click', (event) => {
                         'Successful',
                         'success'
                     )
+                    populateStudentTable();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -132,12 +133,12 @@ clear.on('click', () => {
 
 
 function populateStudentTable() {
-    dbprogress.getStudent()
+    dbprogress.getAllStudent()
         .then((responseText) => {
-                let student_db = JSON.parse(responseText);
-                $('tbody').eq(0).empty();
-                student_db.map((student) => {
-                    $('tbody').eq(0).append(
+            let student_db = JSON.parse(responseText);
+            $('tbody').eq(0).empty();
+            student_db.forEach((student) => {
+                $('tbody').eq(0).append(
                     `<tr>
                         <th row='span'>${student.studentId}</th>
                         <td>${student.firstName}</td>
@@ -159,28 +160,29 @@ function populateStudentTable() {
                             </button>
                         </td>
                     </tr>`
-                    );
-                });
+                );
+            });
         })
         .catch((error) => {
             console.log(error);
-            showError('fetch Unsucessfull', error);
+            showError('fetch Unsuccessful', error);
         });
-
-    $('.updateBtn').on('click', function () {
-        const studentId = $(this).data('student-id');
-        openStudentModal('Update Student', 'Update', 'btn-warning', studentId);
-    });
-
-    $('.deleteBtn').on('click', function () {
-        const studentId = $(this).data('student-id');
-        deleteStudent(studentId);
-    });
 }
+
+$('tbody').on('click', '.updateBtn', function () {
+    const studentId = $(this).data('student-id');
+    openStudentModal('Update Student', 'Update', 'btn-warning', studentId);
+});
+
+$('tbody').on('click', '.deleteBtn', function () {
+    const studentId = $(this).data('student-id');
+    deleteStudent(studentId);
+});
+
 
 function deleteStudent(studentId) {
 
-    const index = student_db.findIndex(student => student.studentId === studentId);
+    console.log('delete method call');
 
     Swal.fire({
         title: 'Are you sure?',
@@ -192,17 +194,19 @@ function deleteStudent(studentId) {
         confirmButtonText: 'Delete'
     }).then((result) => {
         if (result.isConfirmed) {
-            if (index !== -1) {
-                student_db.splice(index, 1);
-                populateStudentTable();
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            } else {
-                showError('Error', 'Student cannot found !');
-            }
+            dbprogress.deleteStudent(studentId)
+                .then((responseText) => {
+                    Swal.fire(
+                        responseText,
+                        'Successful',
+                        'success'
+                    )
+                    populateStudentTable();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    showError('Student delete Unsucessfull', error);
+                });
         }
     });
 
@@ -211,15 +215,22 @@ function deleteStudent(studentId) {
 function openStudentModal(heading, buttonText, buttonClass, stuId) {
 
     if (stuId) {
-        const student = student_db.find(student => student.studentId === stuId);
-        studentId.val(student.studentId);
-        firstName.val(student.fName);
-        lastName.val(student.lName);
-        contact.val(student.contact);
-        email.val(student.email);
-        address.val(student.address);
-        program.val(student.program);
-        batchNo.val(student.batchNo);
+        dbprogress.getStudent(stuId)
+                .then((responseText) => {
+                    let student = JSON.parse(responseText);
+                    studentId.val(student.studentId);
+                    firstName.val(student.firstName);
+                    lastName.val(student.lastName);
+                    contact.val(student.contact);
+                    email.val(student.email);
+                    address.val(student.address);
+                    program.val(student.program);
+                    batchNo.val(student.batchNo);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    showError('Save Unsucessfull', error);
+                });
     }
 
     $('#studentFormHeading').text(heading);
