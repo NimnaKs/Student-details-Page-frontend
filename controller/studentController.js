@@ -1,5 +1,5 @@
-import { student_db } from "../db/db.js";
 import { StudentModel } from "../model/studentModel.js";
+import {DBProgress} from "../db/db.js";
 
 let addBtn = $('#addBtn');
 let saveUpdateBtn = $('#saveUpdateButton');
@@ -30,22 +30,19 @@ search.on("keyup", function () {
 
 addBtn.on('click', () => {
     openStudentModal('Add New Student', 'Save', 'btn-success');
-    studentId.val(generateStudentId());
+    generateStudentId();
 });
 
 function generateStudentId() {
-    let highestStuId = 0;
-
-    for (let i = 0; i < student_db.length; i++) {
-
-        const numericPart = parseInt(student_db[i].studentId.split('-')[1]);
-
-        if (!isNaN(numericPart) && numericPart > highestStuId) {
-            highestStuId = numericPart;
-        }
-    }
-
-    return `stu-${String(highestStuId + 1).padStart(3, '0')}`;
+    let dbprogress = new DBProgress();
+    dbprogress.generateStudentId()
+        .then((stuId) =>{
+            studentId.val(JSON.parse(stuId));
+        })
+        .catch((error) =>{
+            showError('Fetching Error','Error generating student ID');
+            console.error('Error generating student ID:',error);
+        });
 }
 
 saveUpdateBtn.on('click', (event) => {
@@ -112,13 +109,15 @@ saveUpdateBtn.on('click', (event) => {
         clear.click();
 
         populateStudentTable();
+
+        console.log(student_db);
     }
 
 });
 
 clear.on('click', () => {
     reset.click();
-    studentId.val(generateStudentId());
+    generateStudentId();
 });
 
 
