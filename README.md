@@ -2,32 +2,47 @@
 
 This is a simple CRUD demo project for managing student details. The project is divided into two repositories: one for the front end and one for the back end.
 
-# Student Details Frontend 
-https://github.com/NimnaKs/Student-details-Page-frontend
+## Student Details Frontend
 
-# Student Details Backend
-https://github.com/NimnaKs/Student-details-Page-backend.git
+[GitHub Repository](https://github.com/NimnaKs/Student-details-Page-frontend)
 
-# Getting Started
-clone the backend 
-git clone https://github.com/NimnaKs/Student-details-Page-backend.git
+## Student Details Backend
 
-change database credentials.
-create database and create student table.
-query for student table 
-create table Student
+[GitHub Repository](https://github.com/NimnaKs/Student-details-Page-backend.git)
+
+## Getting Started
+
+### Backend Setup
+
+1. Clone the backend repository:
+   ```bash
+   git clone https://github.com/NimnaKs/Student-details-Page-backend.git
+2. Change database credentials in the backend project.
+
+3. Create a database and the Student table. Use the following SQL query:
+
+sql
+Copy code
+CREATE TABLE Student
 (
-    student_id     varchar(10)  not null
-        primary key,
-    first_name     varchar(50)  null,
-    last_name      varchar(50)  null,
-    address        varchar(255) null,
-    batch_no       int          null,
-    contact_number varchar(10)  null,
-    email          varchar(255) null,
-    program        varchar(50)  null
+    student_id     VARCHAR(10)  NOT NULL PRIMARY KEY,
+    first_name     VARCHAR(50)  NULL,
+    last_name      VARCHAR(50)  NULL,
+    address        VARCHAR(255) NULL,
+    batch_no       INT          NULL,
+    contact_number VARCHAR(10)  NULL,
+    email          VARCHAR(255) NULL,
+    program        VARCHAR(50)  NULL
 );
 
-then run the backend server through apache tom cat server.
+4. Run the backend server using Apache Tomcat.
+   
+### Frontend Setup
+Visit https://nimnaks.github.io/Student-details-Page-frontend/
 
-then visit to 
+Explore, view, add, edit, and delete student details using the frontend interface.
+
+### Contributing
+Feel free to contribute to the project by opening issues or submitting pull requests.
+
+This README file section now provides clear instructions for setting up the backend, creating the database and table, running the backend server, and exploring the frontend interface. Feel free to incorporate this into your complete README file.
