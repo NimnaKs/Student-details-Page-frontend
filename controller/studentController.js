@@ -1,5 +1,5 @@
 import { StudentModel } from "../model/studentModel.js";
-import {DBProgress} from "../db/db.js";
+import { DBProgress } from "../db/db.js";
 
 let addBtn = $('#addBtn');
 let saveUpdateBtn = $('#saveUpdateButton');
@@ -20,6 +20,7 @@ let search = $('#searchInput');
 const emailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$");
 const mobilePattern = new RegExp("^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$");
 
+let dbprogress = new DBProgress();
 
 search.on("keyup", function () {
     let value = $(this).val().toLowerCase();
@@ -34,14 +35,13 @@ addBtn.on('click', () => {
 });
 
 function generateStudentId() {
-    let dbprogress = new DBProgress();
     dbprogress.generateStudentId()
-        .then((stuId) =>{
+        .then((stuId) => {
             studentId.val(JSON.parse(stuId));
         })
-        .catch((error) =>{
-            showError('Fetching Error','Error generating student ID');
-            console.error('Error generating student ID:',error);
+        .catch((error) => {
+            showError('Fetching Error', 'Error generating student ID');
+            console.error('Error generating student ID:', error);
         });
 }
 
@@ -64,9 +64,9 @@ saveUpdateBtn.on('click', (event) => {
         validation(contact_no, "student contact", mobilePattern.test(contact_no)) &&
         validation(email_add, "student email", emailPattern.test(email_add)) &&
         validation(add, "student addresss", null) &&
-        validation(prog, "student program", null) && 
-        validation(b_no, "student batch no", null) 
-        ){
+        validation(prog, "student program", null) &&
+        validation(b_no, "student batch no", null)
+    ) {
 
         let studentModel = new StudentModel(
             student_id,
@@ -80,17 +80,23 @@ saveUpdateBtn.on('click', (event) => {
         );
 
         if (saveUpdateBtn.text() === 'Save') {
-            student_db.push(studentModel);
-            Swal.fire(
-                'Save Successfully !',
-                'Successful',
-                'success'
-            )
+            dbprogress.saveStudent(studentModel)
+                .then((responseText) => {
+                    Swal.fire(
+                        responseText,
+                        'Successful',
+                        'success'
+                    )
+                })
+                .catch((error) => {
+                    console.log(error);
+                    showError('Save Unsucessfull', error);
+                });
         } else {
             student_db.map((student) => {
                 if (studentModel.studentId === student.studentId) {
-                    student.fName = studentModel.fName;
-                    student.lName = studentModel.lName;
+                    student.fName = studentModel.firstName;
+                    student.lName = studentModel.lastName;
                     student.contact = studentModel.contact;
                     student.email = studentModel.email;
                     student.address = studentModel.address;

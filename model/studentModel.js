@@ -1,8 +1,8 @@
 export class StudentModel{
-    constructor(studentId,fName,lName,contact,email,address,program,batchNo) {
+    constructor(studentId,firstName,lastName,contact,email,address,program,batchNo) {
         this.studentId = studentId;
-        this.fName = fName;
-        this.lName = lName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.contact = contact;
         this.email=email;
         this.address = address;
