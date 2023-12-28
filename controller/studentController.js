@@ -94,27 +94,21 @@ saveUpdateBtn.on('click', (event) => {
                     populateStudentTable();
                 })
                 .catch((error) => {
-                    console.log(error);
                     showError('Save Unsucessfull', error);
                 });
         } else {
-            student_db.map((student) => {
-                if (studentModel.studentId === student.studentId) {
-                    student.fName = studentModel.firstName;
-                    student.lName = studentModel.lastName;
-                    student.contact = studentModel.contact;
-                    student.email = studentModel.email;
-                    student.address = studentModel.address;
-                    student.program = studentModel.program;
-                    student.batchNo = studentModel.batchNo;
-                }
-            });
-
-            Swal.fire(
-                'Update Successfully !',
-                'Successful',
-                'success'
-            )
+            dbprogress.updateStudent(studentModel)
+                .then((responseText) => {
+                    Swal.fire(
+                        responseText,
+                        'Successful',
+                        'success'
+                    )
+                    populateStudentTable();
+                })
+                .catch((error) => {
+                    showError('Update Unsucessfull', error);
+                });
         }
 
         clear.click();
