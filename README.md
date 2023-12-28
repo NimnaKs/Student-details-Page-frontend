@@ -38,7 +38,7 @@ CREATE TABLE Student
 4. Run the backend server using Apache Tomcat.
    
 ### Frontend Setup
-Visit https://nimnaks.github.io/Student-details-Page-frontend/
+[Visit Website](https://nimnaks.github.io/Student-details-Page-frontend/)
 
 Explore, view, add, edit, and delete student details using the frontend interface.
 
